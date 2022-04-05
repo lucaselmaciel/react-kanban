@@ -2,36 +2,41 @@ import React from 'react';
 import './App.css';
 
 class App extends React.Component{
+  state={
+    posts:[]
+  }
+  componentDidMount(){
+    this.loadPosts();
+  }
+
+  loadPosts = async() => {
+    const postsResponse = fetch('https://jsonplaceholder.typicode.com/posts')
+    const [posts] = await Promise.all([postsResponse])
+    const postsJson = await posts.json();
+    this.setState({posts:postsJson})
+  }
+
   render(){
     var tasks = this.state.todoList
     var self = this
-    return(
-        <div className="container">
+    const { posts } = this.state;
+      return(
+        <div className="App">
 
           <div id="task-container">
-              <div  id="form-wrapper">
-                 <form onSubmit={this.handleSubmit}  id="form">
-                    <div className="flex-wrapper">
-                        <div style={{flex: 6}}>
-                            <input onChange={this.handleChange} className="form-control" id="title" value={this.state.activeItem.title} type="text" name="title" placeholder="Add task.." />
-                         </div>
-
-                         <div style={{flex: 1}}>
-                            <input id="submit" className="btn btn-warning" type="submit" name="Add" />
-                          </div>
-                      </div>
-                </form>
-             
-              </div>
-
-              <div  id="list-wrapper">         
-                    
-              </div>
+              {posts.map(post => (
+                <div key={post.id}>
+                  <h2>{post.title}</h2>
+                  <p>{post.body}</p>
+                  
+                </div>  
+              ))}
           </div>
           
         </div>
       )
+    }
   }
-}
+
 
 export default App;

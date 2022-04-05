@@ -2,3 +2,6 @@ __pycache__
 *.*~
 *.pyc
 .idea
+.env
+launch.json
+asset-manifest.json
